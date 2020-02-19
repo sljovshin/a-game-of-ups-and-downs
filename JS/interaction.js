@@ -1,4 +1,3 @@
-
 const stairsup = [{
                         room: 10,
                         x: 400,
@@ -42,24 +41,38 @@ const stairsdown = [{
                     }]
 
 
-function openDoor(i) {
+function playerOpenDoor(i) {
     stairsdown.forEach( room => {       
         if(rooms[i].roomNum === room.room) {
             drawRoom(halldown, rooms[i].x, rooms[i].y, 400, 250); 
-            setTimeout(stairDown(stairsdown.indexOf(room)), 1000);
+            setTimeout(playerStairDown(stairsdown.indexOf(room)), 1000);
          }
     })
     stairsup.forEach( room => {
         if(rooms[i].roomNum === room.room) {
             drawRoom(hallup, rooms[i].x, rooms[i].y, 400, 250);        
-            setTimeout(stairsUp(stairsup.indexOf(room)), 1000);
+            setTimeout(playerStairsUp(stairsup.indexOf(room)), 1000);
+         }
+    })
+}
+function rivalOpenDoor(i) {
+    stairsdown.forEach( room => {       
+        if(rooms[i].roomNum === room.room) {
+            drawRoom(halldown, rooms[i].x, rooms[i].y, 400, 250); 
+            setTimeout(rivalStairDown(stairsdown.indexOf(room)), 1000);
+         }
+    })
+    stairsup.forEach( room => {
+        if(rooms[i].roomNum === room.room) {
+            drawRoom(hallup, rooms[i].x, rooms[i].y, 400, 250);        
+            setTimeout(rivalStairsUp(stairsup.indexOf(room)), 1000);
          }
     })
 }
 
-function stairDown(i) {   
-    if (!moving && !wentUp && playerDoneMoving) {
-        wentDown = true;       
+function playerStairDown(i) {   
+    if (!playerMoving && !playerWentUp && playerDoneMoving) {
+        playerWentDown = true;       
         player.x = stairsup[i].x + 168;
         player.y = stairsup[i].y + 90;
         window.scroll({
@@ -68,15 +81,29 @@ function stairDown(i) {
           });
     }
 }
-function stairsUp(i) {
-    if (!moving && !wentDown && playerDoneMoving) {
-        wentUp = true;
+function playerStairsUp(i) {
+    if (!playerMoving && !playerWentDown && playerDoneMoving) {
+        playerWentUp = true;
         player.x = stairsdown[i].x + 168;
         player.y = stairsdown[i].y + 90;
         window.scroll({
             top: player.y,
             behavior: 'smooth'
           });
+    }
+}
+function rivalStairDown(i) {   
+    if (!rivalMoving && !rivalWentUp && rivalDoneMoving) {
+        rivalWentDown = true;       
+        rival.x = stairsup[i].x + 168;
+        rival.y = stairsup[i].y + 90;
+    }
+}
+function rivalStairsUp(i) {
+    if (!rivalMoving && !rivalWentDown && rivalDoneMoving) {
+        rivalWentUp = true;
+        rival.x = stairsdown[i].x + 168;
+        rival.y = stairsdown[i].y + 90;
     }
 }
 
@@ -86,25 +113,38 @@ function playerLocationDetection() {
     //console.log(player.y);
     for (let i = 0; i < rooms.length; i++) {
         if (player.x > rooms[i].x && player.x < rooms[i].xX && player.y > rooms[i].y && player.y < rooms[i].yY) {
-            openDoor(i);                      
+            playerOpenDoor(i);                      
         }     
     }
-    if(player.x > 1200 && player. y > 3000) {
+    if(player.x > 1200 && player.y > 3000) {
+        context.drawImage(chestOpen, 1490, 3145, 90, 60);
+    } else {
+        context.drawImage(chestClosed, 1490, 3145, 90, 60);
+    }
+}
+function rivalLocationDetection() {
+    //console.log(player.y);
+    for (let i = 0; i < rooms.length; i++) {
+        if (rival.x > rooms[i].x && rival.x < rooms[i].xX && rival.y > rooms[i].y && rival.y < rooms[i].yY) {
+            rivalOpenDoor(i);                      
+        }     
+    }
+    if(rival.x > 1200 && rival.y > 3000) {
         context.drawImage(chestOpen, 1490, 3145, 90, 60);
     } else {
         context.drawImage(chestClosed, 1490, 3145, 90, 60);
     }
 }
 
-function determinFloor() {
+function playerDeterminFloor() {
     for (let i = 0; i < levels.length; i++) {
         if (player.y > levels[i].y && player.y < levels[i].yY) {
             if (levels[i].level % 2 === 1) {
-                left = false;
-                right = true;
+                playerRight = true;
+                playerLeft = false;
             } else {
-                right = false;
-                left = true;
+                playerRight = false;
+                playerLeft = true;
             }
            if (levels[i].level === 12) {
                 bossIdle = false;
@@ -114,6 +154,26 @@ function determinFloor() {
         }
     } 
 }
+function rivalDeterminFloor() {
+    for (let i = 0; i < levels.length; i++) {
+        if (rival.y > levels[i].y && rival.y < levels[i].yY) {
+            if (levels[i].level % 2 === 1) {
+                rivalRight = true;
+                rivalLeft = false;
+            } else {
+                rivalRight = false;
+                rivalLeft = true;
+            }
+           if (levels[i].level === 12) {
+                bossIdle = false;
+            } else {
+                bossIdle = true;
+            }
+        }
+    } 
+}
+
+
 
 /**
  *     if(rooms[i].roomNum === 4) {

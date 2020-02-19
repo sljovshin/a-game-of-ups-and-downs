@@ -1,25 +1,79 @@
 const socket = io('/game');
+let loaded_images = 0;
+let starttile = new Image,
+gateoverlap = new Image,
+hall = new Image,
+halldoor = new Image,
+hallup = new Image,
+halldown = new Image,
+chestClosed = new Image,
+chestOpen = new Image,
+js_leftSprite = new Image,
+js_rightSpirte = new Image,
+js_victorySprite = new Image,
+dt_leftSprite = new Image,
+dt_rightSprite = new Image,
+dt_victorySprite= new Image,
+nk_idleSprite = new Image,
+nk_activeSprite = new Image;
 
+let images = [
+     starttile,
+     gateoverlap,
+     hall,
+     halldoor,
+     hallup,
+     halldown,
+     chestClosed,
+     chestOpen,
+     js_leftSprite,
+     js_rightSpirte,
+     js_victorySprite,
+     dt_leftSprite,
+     dt_rightSprite,
+     dt_victorySprite,
+     nk_idleSprite,
+     nk_activeSprite
+]
+let image_sources = [
+    '../ASSETS/start.png',   
+    '../ASSETS/gateoverlap.png',
+    '../ASSETS/hallway.png',
+    '../ASSETS/hallwayClosedDoor.png',
+    '../ASSETS/hallwayStairsUp.png',
+    '../ASSETS/hallwayStairsDown.png',
+    '../ASSETS/dragonglasschest.png',
+    '../ASSETS/dragonglasschestopen.png',
+    '../ASSETS/JonSnowL.png',
+    '../ASSETS/JonSnowR.png',
+    '../ASSETS/jonSnowVictory.png',
+    '../ASSETS/danerysL.png',
+    '../ASSETS/danerysR.png',
+    '../ASSETS/dannyVictory.png',
+    '../ASSETS/nightkingidle.png',
+    '../ASSETS/nkactiveAura.png'
+]
 let screen = document.getElementById('main')
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
-let starttile = document.getElementById('start');
-let gateoverlap = document.getElementById('gateoverlap');
-let hall = document.getElementById('hallway');
-let halldoor = document.getElementById('hallwayDoor');
-let hallup = document.getElementById('hallwayUp');
-let halldown = document.getElementById('hallwayDown');
-let chestClosed = document.getElementById('chestClosed');
-let chestOpen = document.getElementById('chestOpen');
-let playerNumber = null; 
+starttile = images[0];
+gateoverlap = images[1];
+hall = images[2];
+halldoor = images[3];
+hallup = images[4];
+halldown = images[5];
+chestClosed = images[6];
+chestOpen = images[7];
+
+
 let rooms= [];
 
 let jon = {
-    leftSprite: document.getElementById('jonSnowL'),
-    rightSprite: document.getElementById('jonSnowR'),
-    victorySprite: document.getElementById('jonSnowV'),
-    x: 168,
+    leftSprite: images[8],
+    rightSprite: images[9],
+    victorySprite: images[10],
+    x: 210,
     y: 90,
     height: 110,
     width: 76,
@@ -27,10 +81,10 @@ let jon = {
     vy: 6,
 };
 let danny = {
-    leftSprite: document.getElementById('danerysL'),
-    rightSprite: document.getElementById('danerysR'),
-    victorySprite: document.getElementById('danerysV'),
-    x: 168,
+    leftSprite: images[11],
+    rightSprite: images[12],
+    victorySprite: images[13],
+    x: 131,
     y: 90,
     height: 110,
     width: 76,
@@ -38,7 +92,10 @@ let danny = {
     vy: 6,
 }
 
+let playerNumber = null; 
 let player = jon;
+let rival = danny;
+
 socket.on('assignedHero', assignedHero);
 
 function assignedHero(num) {
@@ -46,6 +103,9 @@ function assignedHero(num) {
 }
 function assignHero (p1, p2, num) {
     return num === 1 ? p1 : p2;
+  }
+  function assignRival (p1, p2, num) {
+    return num === 1 ? p2 : p1;
   }
 
 const randomRoom = () => {

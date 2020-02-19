@@ -79,14 +79,24 @@ function readyCheck() {
 let players = [];
 let current_turn = 0;
 let _turn = 0;
+let _rival = 0;
 
 function next_turn(){
-   _turn = current_turn++ % players.length;
-   players[_turn].emit('your_turn');
+   if(_turn === 0) {
+     players[0].emit('your_turn');
+     _turn = 1;
+    } else {
+      players[1].emit('your_turn');
+      _turn = 0;
+   }
    console.log("next turn triggered " , _turn);
 }
 function firstTurn(){
   players[0].emit('not_your_turn');
+}
+function rivalMove(roll) {
+  _rival = current_turn++ % players.length;
+  players[_rival].emit('rival_move', roll)
 }
 
 
@@ -96,6 +106,7 @@ function gamelog(socket) {
   console.log('A player connected');
   if (user < 3) {
     socket.emit('assignedHero', user)
+    user = 1;
   }
   user++;
   players.push(socket);
@@ -108,15 +119,13 @@ function gamelog(socket) {
   if(current_turn === 0) {
     firstTurn();
   }
+  socket.on('rival_roll', rivalMove);
   socket.on('done',function(){
-     //if(players[_turn] === socket){
         next_turn();
-     //}
   })
   socket.on('disconnect', function(){
     console.log('A player disconnected');
     players.splice(players.indexOf(socket),1);
-    _turn--;
     console.log("A number of players now ",players.length);
   });
 }

@@ -1,73 +1,54 @@
-let up = false;
-let down = false;
-let left = false;
-let right = false;
+let playerRight = false;
+let playerLeft = false;
+let rivalRight = false;
+let rivalLeft = false;
 let playerDoneMoving = true;
-let moving = false;
-let wentDown = false;
-let wentUp = false;
+let rivalDoneMoving = true;
+let playerMoving = false;
+let rivalMoving = false;
+let playerWentDown = false;
+let playerWentUp = false;
+let rivlWentDown = false;
+let rivalWentUp = false;
 let direction;
 
 function drawCharacter(char, x, y, charW, CharH) {
     return context.drawImage(char, x, y, charW, CharH);
 }
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'w') {       
-        up = true;
-    } 
-    if(event.key === 'a') {
-        left = true;        
-    } 
-    if(event.key === 'd') {
-        right = true;        
-    } 
-    if(event.key === 's') {
-        down = true;
-    }  
-});
-document.addEventListener('keyup', (event) => {
-    if (event.key === 'w') {
-        up = false;
-    } 
-    if(event.key === 'a') {
-        left = false;        
-    } 
-    if(event.key === 'd') {
-        right = false;        
-    } 
-    if(event.key === 's') {
-        down = false;
-    }
-});
 
 function playerMove() {
-    if (up && moving){
-        player.y -= player.vy;
-    }
-    if (right && moving){
+    if (playerRight && playerMoving){
         player.x += player.vx;
-        
     }
-    if (down && moving){
-        player.y += player.vy;
-    }
-    if (left && moving){
+    if (playerLeft && playerMoving){
         player.x -= player.vx;
     }
 }
+function rivalMove() {
+    if (rivalRight && rivalMoving){
+        rival.x += rival.vx;
+    }
+    if (rivalLeft && rivalMoving){
+        rival.x -= rival.vx;
+    }
+}
+
 
 
 
 //let lastDir = player.rightSprite;
 
 function drawPlayer() {
-    if (left) {
+    if (playerLeft) {
         drawCharacter(player.leftSprite, player.x, player.y, player.width, player.height)
-        lastDir = player.leftSprite;
-    } else if (right) {
+    } else if (playerRight) {
         drawCharacter(player.rightSprite, player.x, player.y, player.width, player.height)
-        lastDir = player.rightSprite;
-    } else {
-        //drawCharacter(lastDir, player.x, player.y, player.width, player.height)
+    }
+}
+function drawRival() {
+    if (rivalLeft) {
+        drawCharacter(rival.leftSprite, rival.x, rival.y, rival.width, rival.height)
+    } else if (rivalRight) {
+        drawCharacter(rival.rightSprite, rival.x, rival.y, rival.width, rival.height)
     }
 }

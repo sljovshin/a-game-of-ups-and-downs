@@ -1,7 +1,7 @@
 let bossIdle = true;
 let boss = {
-    active: document.getElementById('nkActive'),
-    idle: document.getElementById('nkIdle'),
+    idle: images[14],
+    active: images[15],
     x: 160,
     activeX: 117,
     y: 2810,
