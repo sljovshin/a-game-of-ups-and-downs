@@ -4,12 +4,12 @@ const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const Players = require('./Players');
 const nsp = io.of('/game');
-
+const PORT = process.env.PORT || 3000;
 let connections = [];
 let waitingPlayer = null;
 let users = [];
 
-server.listen(3000)
+server.listen(PORT)
 console.log('server running on port 3000...')
 
 app.use(express.static(__dirname + '/'));
