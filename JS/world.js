@@ -47,8 +47,8 @@ let image_sources = [
     '../ASSETS/JonSnowL.png',
     '../ASSETS/JonSnowR.png',
     '../ASSETS/jonSnowVictory.png',
-    '../ASSETS/danerysL.png',
-    '../ASSETS/danerysR.png',
+    '../ASSETS/DanerysL.png',
+    '../ASSETS/DanerysR.png',
     '../ASSETS/dannyVictory.png',
     '../ASSETS/nightkingidle.png',
     '../ASSETS/nkactiveAura.png'
