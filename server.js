@@ -8,6 +8,9 @@ const nsp = io.of('/game');
 let connections = [];
 let waitingPlayer = null;
 let users = [];
+io.set('transports', ['websocket']);
+nsp.set('transports', ['websocket']);
+
 
 server.listen(3000)
 console.log('server running on port 3000...')
