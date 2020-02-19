@@ -8,16 +8,13 @@ const nsp = io.of('/game');
 let connections = [];
 let waitingPlayer = null;
 let users = [];
-io.set('transports', ['websocket']);
-nsp.set('transports', ['websocket']);
-
 
 server.listen(3000)
 console.log('server running on port 3000...')
 
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/'));
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '../client/index.html');
+  res.sendFile(__dirname + '../index.html');
 });
 let readyPlayers = 0;
 io.on('connection', onConnection);
